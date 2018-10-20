@@ -4,14 +4,14 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         curl \
 	libgdiplus \
-        libc6-dev \
+        libc6-dev \        
     && rm -rf /var/lib/apt/lists/*
 
 # Install ASP.NET Core
-ENV ASPNETCORE_VERSION 2.1.2
+ENV ASPNETCORE_VERSION 2.1.5
 
 RUN curl -SL --output aspnetcore.tar.gz https://dotnetcli.blob.core.windows.net/dotnet/aspnetcore/Runtime/$ASPNETCORE_VERSION/aspnetcore-runtime-$ASPNETCORE_VERSION-linux-x64.tar.gz \
-    && aspnetcore_sha512='294a6c256ce7954c05c3dee85d4114e320c7b94b2ae2e854a268b2bb4383a967e1063ee0df0da0f09511b3dc9c215aa735899f5c6db4f11bd58da3cb9cc8b6da' \
+    && aspnetcore_sha512='3326963ba0a431ca430d8f1a7940487e516952ec560da563f03662b71b2ac8b5d9904b0e1422212e452b49f563349d10fea34241f4d5e4811d0aedc02c557029' \
     && echo "$aspnetcore_sha512  aspnetcore.tar.gz" | sha512sum -c - \
     && mkdir -p /usr/share/dotnet \
     && tar -zxf aspnetcore.tar.gz -C /usr/share/dotnet \
@@ -19,3 +19,4 @@ RUN curl -SL --output aspnetcore.tar.gz https://dotnetcli.blob.core.windows.net/
     && ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet \
     && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo 'Asia/Shanghai' >/etc/timezone
+
