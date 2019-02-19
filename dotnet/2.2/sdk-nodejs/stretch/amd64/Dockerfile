@@ -12,14 +12,7 @@ RUN apt-get update \
         libstdc++6 \
         zlib1g \
         libgdiplus \
-        libc6-dev \
-# setup nodejs        
-        wget \
-        gnupg2 \
-    && wget -qO- https://deb.nodesource.com/setup_8.x | bash - \
-    && apt-get install -y build-essential nodejs \
-# end setup
-    && rm -rf /var/lib/apt/lists/*
+        libc6-dev
 
 # Install .NET Core SDK
 ENV DOTNET_SDK_VERSION 2.2.103
@@ -31,6 +24,14 @@ RUN curl -SL --output dotnet.tar.gz https://dotnetcli.blob.core.windows.net/dotn
     && tar -zxf dotnet.tar.gz -C /usr/share/dotnet \
     && rm dotnet.tar.gz \
     && ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
+
+# Install Nodejs and npm
+RUN apt-get update -yq && apt-get upgrade -yq && apt-get install -yq curl git nano
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - && apt-get install -yq nodejs build-essential
+RUN npm install -g npm
+
+# Clean apt cache
+RUN rm -rf /var/lib/apt/lists/*
 
 # Configure web servers to bind to port 80 when present
 ENV ASPNETCORE_URLS=http://+:80 \
